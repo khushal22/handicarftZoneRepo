@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="hczdbModelStoreContainer" CdmEntityContainer="hczdbEntities">
+    <EntitySetMapping Name="tbl_categories">
+      <EntityTypeMapping TypeName="hczdbModel.tbl_categories">
+        <MappingFragment StoreEntitySet="tbl_categories">
+          <ScalarProperty Name="cat_id" ColumnName="cat_id" />
+          <ScalarProperty Name="cat_name" ColumnName="cat_name" />
+          <ScalarProperty Name="cat_image" ColumnName="cat_image" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbl_productDetail">
+      <EntityTypeMapping TypeName="hczdbModel.tbl_productDetail">
+        <MappingFragment StoreEntitySet="tbl_productDetail">
+          <ScalarProperty Name="ad_id" ColumnName="ad_id" />
+          <ScalarProperty Name="cat_id" ColumnName="cat_id" />
+          <ScalarProperty Name="subcat_id" ColumnName="subcat_id" />
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="pro_name" ColumnName="pro_name" />
+          <ScalarProperty Name="pro_image" ColumnName="pro_image" />
+          <ScalarProperty Name="pro_price" ColumnName="pro_price" />
+          <ScalarProperty Name="pro_desc" ColumnName="pro_desc" />
+          <ScalarProperty Name="ad_status" ColumnName="ad_status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbl_subcategories">
+      <EntityTypeMapping TypeName="hczdbModel.tbl_subcategories">
+        <MappingFragment StoreEntitySet="tbl_subcategories">
+          <ScalarProperty Name="subcat_id" ColumnName="subcat_id" />
+          <ScalarProperty Name="cat_id" ColumnName="cat_id" />
+          <ScalarProperty Name="subcat_name" ColumnName="subcat_name" />
+          <ScalarProperty Name="subcat_image" ColumnName="subcat_image" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbl_user">
+      <EntityTypeMapping TypeName="hczdbModel.tbl_user">
+        <MappingFragment StoreEntitySet="tbl_user">
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="user_name" ColumnName="user_name" />
+          <ScalarProperty Name="user_email" ColumnName="user_email" />
+          <ScalarProperty Name="user_pass" ColumnName="user_pass" />
+          <ScalarProperty Name="user_add" ColumnName="user_add" />
+          <ScalarProperty Name="user_locality" ColumnName="user_locality" />
+          <ScalarProperty Name="user_city" ColumnName="user_city" />
+          <ScalarProperty Name="user_pincode" ColumnName="user_pincode" />
+          <ScalarProperty Name="user_mob_no" ColumnName="user_mob_no" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbl_wishList">
+      <EntityTypeMapping TypeName="hczdbModel.tbl_wishList">
+        <MappingFragment StoreEntitySet="tbl_wishList">
+          <ScalarProperty Name="ad_id" ColumnName="ad_id" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbl_alert">
+      <EntityTypeMapping TypeName="hczdbModel.tbl_alert">
+        <MappingFragment StoreEntitySet="tbl_alert">
+          <ScalarProperty Name="rId" ColumnName="rId" />
+          <ScalarProperty Name="msg" ColumnName="msg" />
+          <ScalarProperty Name="sub" ColumnName="sub" />
+          <ScalarProperty Name="semail" ColumnName="semail" />
+          <ScalarProperty Name="smob" ColumnName="smob" />
+          <ScalarProperty Name="sname" ColumnName="sname" />
+          <ScalarProperty Name="aid" ColumnName="aid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbl_forgetPass">
+      <EntityTypeMapping TypeName="hczdbModel.tbl_forgetPass">
+        <MappingFragment StoreEntitySet="tbl_forgetPass">
+          <ScalarProperty Name="otp" ColumnName="otp" />
+          <ScalarProperty Name="emailOrMob" ColumnName="emailOrMob" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

@@ -1,0 +1,452 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="hczdbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tbl_alert">
+          <Key>
+            <PropertyRef Name="aid" />
+          </Key>
+          <Property Name="aid" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sname" Type="varchar" MaxLength="20" />
+          <Property Name="smob" Type="nvarchar" MaxLength="10" />
+          <Property Name="semail" Type="varchar" MaxLength="20" />
+          <Property Name="sub" Type="varchar" MaxLength="20" />
+          <Property Name="msg" Type="varchar" MaxLength="150" />
+          <Property Name="rId" Type="numeric" Precision="18" Scale="0" />
+        </EntityType>
+        <EntityType Name="tbl_categories">
+          <Key>
+            <PropertyRef Name="cat_id" />
+          </Key>
+          <Property Name="cat_id" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="cat_name" Type="varchar" MaxLength="30" />
+          <Property Name="cat_image" Type="varchar" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="tbl_forgetPass">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="emailOrMob" Type="varchar" MaxLength="20" />
+          <Property Name="otp" Type="varchar" MaxLength="15" />
+        </EntityType>
+        <EntityType Name="tbl_productDetail">
+          <Key>
+            <PropertyRef Name="ad_id" />
+          </Key>
+          <Property Name="ad_id" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="cat_id" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="subcat_id" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="user_id" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="pro_name" Type="varchar" MaxLength="30" />
+          <Property Name="pro_image" Type="varchar" MaxLength="30" />
+          <Property Name="pro_price" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="pro_desc" Type="varchar" MaxLength="100" />
+          <Property Name="ad_status" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="tbl_subcategories">
+          <Key>
+            <PropertyRef Name="subcat_id" />
+          </Key>
+          <Property Name="subcat_id" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="cat_id" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="subcat_name" Type="varchar" MaxLength="30" />
+          <Property Name="subcat_image" Type="varchar" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="tbl_user">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="user_name" Type="varchar" MaxLength="30" />
+          <Property Name="user_email" Type="varchar" MaxLength="30" />
+          <Property Name="user_pass" Type="varchar" MaxLength="30" />
+          <Property Name="user_add" Type="varchar" MaxLength="30" />
+          <Property Name="user_locality" Type="varchar" MaxLength="30" />
+          <Property Name="user_city" Type="varchar" MaxLength="30" />
+          <Property Name="user_pincode" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="user_mob_no" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="tbl_wishList">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ad_id" Type="numeric" Precision="18" Scale="0" />
+        </EntityType>
+        <Association Name="FK__tbl_produ__cat_i__0EA330E9">
+          <End Role="tbl_categories" Type="Self.tbl_categories" Multiplicity="0..1" />
+          <End Role="tbl_productDetail" Type="Self.tbl_productDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_categories">
+              <PropertyRef Name="cat_id" />
+            </Principal>
+            <Dependent Role="tbl_productDetail">
+              <PropertyRef Name="cat_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tbl_produ__subca__0F975522">
+          <End Role="tbl_subcategories" Type="Self.tbl_subcategories" Multiplicity="0..1" />
+          <End Role="tbl_productDetail" Type="Self.tbl_productDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_subcategories">
+              <PropertyRef Name="subcat_id" />
+            </Principal>
+            <Dependent Role="tbl_productDetail">
+              <PropertyRef Name="subcat_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tbl_produ__user___108B795B">
+          <End Role="tbl_user" Type="Self.tbl_user" Multiplicity="0..1" />
+          <End Role="tbl_productDetail" Type="Self.tbl_productDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_user">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="tbl_productDetail">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tbl_subca__cat_i__060DEAE8">
+          <End Role="tbl_categories" Type="Self.tbl_categories" Multiplicity="0..1" />
+          <End Role="tbl_subcategories" Type="Self.tbl_subcategories" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_categories">
+              <PropertyRef Name="cat_id" />
+            </Principal>
+            <Dependent Role="tbl_subcategories">
+              <PropertyRef Name="cat_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tbl_wishL__ad_id__164452B1">
+          <End Role="tbl_productDetail" Type="Self.tbl_productDetail" Multiplicity="0..1" />
+          <End Role="tbl_wishList" Type="Self.tbl_wishList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_productDetail">
+              <PropertyRef Name="ad_id" />
+            </Principal>
+            <Dependent Role="tbl_wishList">
+              <PropertyRef Name="ad_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="hczdbModelStoreContainer">
+          <EntitySet Name="tbl_alert" EntityType="Self.tbl_alert" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_categories" EntityType="Self.tbl_categories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_forgetPass" EntityType="Self.tbl_forgetPass" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_productDetail" EntityType="Self.tbl_productDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_subcategories" EntityType="Self.tbl_subcategories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_user" EntityType="Self.tbl_user" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_wishList" EntityType="Self.tbl_wishList" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__tbl_produ__cat_i__0EA330E9" Association="Self.FK__tbl_produ__cat_i__0EA330E9">
+            <End Role="tbl_categories" EntitySet="tbl_categories" />
+            <End Role="tbl_productDetail" EntitySet="tbl_productDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tbl_produ__subca__0F975522" Association="Self.FK__tbl_produ__subca__0F975522">
+            <End Role="tbl_subcategories" EntitySet="tbl_subcategories" />
+            <End Role="tbl_productDetail" EntitySet="tbl_productDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tbl_produ__user___108B795B" Association="Self.FK__tbl_produ__user___108B795B">
+            <End Role="tbl_user" EntitySet="tbl_user" />
+            <End Role="tbl_productDetail" EntitySet="tbl_productDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tbl_subca__cat_i__060DEAE8" Association="Self.FK__tbl_subca__cat_i__060DEAE8">
+            <End Role="tbl_categories" EntitySet="tbl_categories" />
+            <End Role="tbl_subcategories" EntitySet="tbl_subcategories" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tbl_wishL__ad_id__164452B1" Association="Self.FK__tbl_wishL__ad_id__164452B1">
+            <End Role="tbl_productDetail" EntitySet="tbl_productDetail" />
+            <End Role="tbl_wishList" EntitySet="tbl_wishList" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="hczdbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tbl_categories">
+          <Key>
+            <PropertyRef Name="cat_id" />
+          </Key>
+          <Property Name="cat_id" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="cat_name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="cat_image" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tbl_productDetail" Relationship="Self.FK__tbl_produ__cat_i__0EA330E9" FromRole="tbl_categories" ToRole="tbl_productDetail" />
+          <NavigationProperty Name="tbl_subcategories" Relationship="Self.FK__tbl_subca__cat_i__060DEAE8" FromRole="tbl_categories" ToRole="tbl_subcategories" />
+        </EntityType>
+        <EntityType Name="tbl_productDetail">
+          <Key>
+            <PropertyRef Name="ad_id" />
+          </Key>
+          <Property Name="ad_id" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="cat_id" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="subcat_id" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="user_id" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="pro_name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="pro_image" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="pro_price" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="pro_desc" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ad_status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tbl_categories" Relationship="Self.FK__tbl_produ__cat_i__0EA330E9" FromRole="tbl_productDetail" ToRole="tbl_categories" />
+          <NavigationProperty Name="tbl_subcategories" Relationship="Self.FK__tbl_produ__subca__0F975522" FromRole="tbl_productDetail" ToRole="tbl_subcategories" />
+          <NavigationProperty Name="tbl_user" Relationship="Self.FK__tbl_produ__user___108B795B" FromRole="tbl_productDetail" ToRole="tbl_user" />
+          <NavigationProperty Name="tbl_wishList" Relationship="hczdbModel.FK__tbl_wishL__ad_id__164452B1" FromRole="tbl_productDetail" ToRole="tbl_wishList" />
+        </EntityType>
+        <EntityType Name="tbl_subcategories">
+          <Key>
+            <PropertyRef Name="subcat_id" />
+          </Key>
+          <Property Name="subcat_id" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="cat_id" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="subcat_name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="subcat_image" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tbl_categories" Relationship="Self.FK__tbl_subca__cat_i__060DEAE8" FromRole="tbl_subcategories" ToRole="tbl_categories" />
+          <NavigationProperty Name="tbl_productDetail" Relationship="Self.FK__tbl_produ__subca__0F975522" FromRole="tbl_subcategories" ToRole="tbl_productDetail" />
+        </EntityType>
+        <EntityType Name="tbl_user">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="user_name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="user_email" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="user_pass" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="user_add" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="user_locality" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="user_city" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="user_pincode" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="user_mob_no" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tbl_productDetail" Relationship="Self.FK__tbl_produ__user___108B795B" FromRole="tbl_user" ToRole="tbl_productDetail" />
+        </EntityType>
+        <Association Name="FK__tbl_produ__cat_i__0EA330E9">
+          <End Role="tbl_categories" Type="Self.tbl_categories" Multiplicity="0..1" />
+          <End Role="tbl_productDetail" Type="Self.tbl_productDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_categories">
+              <PropertyRef Name="cat_id" />
+            </Principal>
+            <Dependent Role="tbl_productDetail">
+              <PropertyRef Name="cat_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tbl_subca__cat_i__060DEAE8">
+          <End Role="tbl_categories" Type="Self.tbl_categories" Multiplicity="0..1" />
+          <End Role="tbl_subcategories" Type="Self.tbl_subcategories" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_categories">
+              <PropertyRef Name="cat_id" />
+            </Principal>
+            <Dependent Role="tbl_subcategories">
+              <PropertyRef Name="cat_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tbl_produ__subca__0F975522">
+          <End Role="tbl_subcategories" Type="Self.tbl_subcategories" Multiplicity="0..1" />
+          <End Role="tbl_productDetail" Type="Self.tbl_productDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_subcategories">
+              <PropertyRef Name="subcat_id" />
+            </Principal>
+            <Dependent Role="tbl_productDetail">
+              <PropertyRef Name="subcat_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tbl_produ__user___108B795B">
+          <End Role="tbl_user" Type="Self.tbl_user" Multiplicity="0..1" />
+          <End Role="tbl_productDetail" Type="Self.tbl_productDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_user">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="tbl_productDetail">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="hczdbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tbl_categories" EntityType="Self.tbl_categories" />
+          <EntitySet Name="tbl_productDetail" EntityType="Self.tbl_productDetail" />
+          <EntitySet Name="tbl_subcategories" EntityType="Self.tbl_subcategories" />
+          <EntitySet Name="tbl_user" EntityType="Self.tbl_user" />
+          <AssociationSet Name="FK__tbl_produ__cat_i__0EA330E9" Association="Self.FK__tbl_produ__cat_i__0EA330E9">
+            <End Role="tbl_categories" EntitySet="tbl_categories" />
+            <End Role="tbl_productDetail" EntitySet="tbl_productDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tbl_subca__cat_i__060DEAE8" Association="Self.FK__tbl_subca__cat_i__060DEAE8">
+            <End Role="tbl_categories" EntitySet="tbl_categories" />
+            <End Role="tbl_subcategories" EntitySet="tbl_subcategories" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tbl_produ__subca__0F975522" Association="Self.FK__tbl_produ__subca__0F975522">
+            <End Role="tbl_subcategories" EntitySet="tbl_subcategories" />
+            <End Role="tbl_productDetail" EntitySet="tbl_productDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tbl_produ__user___108B795B" Association="Self.FK__tbl_produ__user___108B795B">
+            <End Role="tbl_user" EntitySet="tbl_user" />
+            <End Role="tbl_productDetail" EntitySet="tbl_productDetail" />
+          </AssociationSet>
+          <EntitySet Name="tbl_wishList" EntityType="hczdbModel.tbl_wishList" />
+          <AssociationSet Name="FK__tbl_wishL__ad_id__164452B1" Association="hczdbModel.FK__tbl_wishL__ad_id__164452B1">
+            <End Role="tbl_productDetail" EntitySet="tbl_productDetail" />
+            <End Role="tbl_wishList" EntitySet="tbl_wishList" />
+          </AssociationSet>
+          <EntitySet Name="tbl_alert" EntityType="hczdbModel.tbl_alert" />
+          <EntitySet Name="tbl_forgetPass" EntityType="hczdbModel.tbl_forgetPass" />
+        </EntityContainer>
+        <EntityType Name="tbl_wishList">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Decimal" Nullable="false" Precision="18" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ad_id" Type="Decimal" Precision="18" Scale="0" />
+          <NavigationProperty Name="tbl_productDetail" Relationship="hczdbModel.FK__tbl_wishL__ad_id__164452B1" FromRole="tbl_wishList" ToRole="tbl_productDetail" />
+        </EntityType>
+        <Association Name="FK__tbl_wishL__ad_id__164452B1">
+          <End Type="hczdbModel.tbl_productDetail" Role="tbl_productDetail" Multiplicity="0..1" />
+          <End Type="hczdbModel.tbl_wishList" Role="tbl_wishList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_productDetail">
+              <PropertyRef Name="ad_id" />
+            </Principal>
+            <Dependent Role="tbl_wishList">
+              <PropertyRef Name="ad_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tbl_alert">
+          <Key>
+            <PropertyRef Name="aid" />
+          </Key>
+          <Property Name="aid" Type="Decimal" Nullable="false" Precision="18" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sname" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="smob" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="semail" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="sub" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="msg" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="rId" Type="Decimal" Precision="18" Scale="0" />
+        </EntityType>
+        <EntityType Name="tbl_forgetPass">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Decimal" Nullable="false" Precision="18" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="emailOrMob" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="otp" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="hczdbModelStoreContainer" CdmEntityContainer="hczdbEntities">
+          <EntitySetMapping Name="tbl_categories">
+            <EntityTypeMapping TypeName="hczdbModel.tbl_categories">
+              <MappingFragment StoreEntitySet="tbl_categories">
+                <ScalarProperty Name="cat_id" ColumnName="cat_id" />
+                <ScalarProperty Name="cat_name" ColumnName="cat_name" />
+                <ScalarProperty Name="cat_image" ColumnName="cat_image" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_productDetail">
+            <EntityTypeMapping TypeName="hczdbModel.tbl_productDetail">
+              <MappingFragment StoreEntitySet="tbl_productDetail">
+                <ScalarProperty Name="ad_id" ColumnName="ad_id" />
+                <ScalarProperty Name="cat_id" ColumnName="cat_id" />
+                <ScalarProperty Name="subcat_id" ColumnName="subcat_id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="pro_name" ColumnName="pro_name" />
+                <ScalarProperty Name="pro_image" ColumnName="pro_image" />
+                <ScalarProperty Name="pro_price" ColumnName="pro_price" />
+                <ScalarProperty Name="pro_desc" ColumnName="pro_desc" />
+                <ScalarProperty Name="ad_status" ColumnName="ad_status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_subcategories">
+            <EntityTypeMapping TypeName="hczdbModel.tbl_subcategories">
+              <MappingFragment StoreEntitySet="tbl_subcategories">
+                <ScalarProperty Name="subcat_id" ColumnName="subcat_id" />
+                <ScalarProperty Name="cat_id" ColumnName="cat_id" />
+                <ScalarProperty Name="subcat_name" ColumnName="subcat_name" />
+                <ScalarProperty Name="subcat_image" ColumnName="subcat_image" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_user">
+            <EntityTypeMapping TypeName="hczdbModel.tbl_user">
+              <MappingFragment StoreEntitySet="tbl_user">
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="user_name" ColumnName="user_name" />
+                <ScalarProperty Name="user_email" ColumnName="user_email" />
+                <ScalarProperty Name="user_pass" ColumnName="user_pass" />
+                <ScalarProperty Name="user_add" ColumnName="user_add" />
+                <ScalarProperty Name="user_locality" ColumnName="user_locality" />
+                <ScalarProperty Name="user_city" ColumnName="user_city" />
+                <ScalarProperty Name="user_pincode" ColumnName="user_pincode" />
+                <ScalarProperty Name="user_mob_no" ColumnName="user_mob_no" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_wishList">
+            <EntityTypeMapping TypeName="hczdbModel.tbl_wishList">
+              <MappingFragment StoreEntitySet="tbl_wishList">
+                <ScalarProperty Name="ad_id" ColumnName="ad_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_alert">
+            <EntityTypeMapping TypeName="hczdbModel.tbl_alert">
+              <MappingFragment StoreEntitySet="tbl_alert">
+                <ScalarProperty Name="rId" ColumnName="rId" />
+                <ScalarProperty Name="msg" ColumnName="msg" />
+                <ScalarProperty Name="sub" ColumnName="sub" />
+                <ScalarProperty Name="semail" ColumnName="semail" />
+                <ScalarProperty Name="smob" ColumnName="smob" />
+                <ScalarProperty Name="sname" ColumnName="sname" />
+                <ScalarProperty Name="aid" ColumnName="aid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_forgetPass">
+            <EntityTypeMapping TypeName="hczdbModel.tbl_forgetPass">
+              <MappingFragment StoreEntitySet="tbl_forgetPass">
+                <ScalarProperty Name="otp" ColumnName="otp" />
+                <ScalarProperty Name="emailOrMob" ColumnName="emailOrMob" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -46,7 +46,8 @@ namespace WebApplication1.Controllers
                        select user;
             if (data.Any())
             {
-                return "logIn success!!";
+                return "logIn success!!" + data.user_id;
+                
             } else
             {
                 return "incorrect userid and password";

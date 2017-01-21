@@ -46,8 +46,10 @@ namespace WebApplication1.Controllers
                        select user;
             if (data.Any())
             {
-                return "logIn success!!" + data.user_id;
-                
+                foreach ( var item in data)
+                {
+                return "logIn success!!!" + item.user_id +"a";
+                }
             } else
             {
                 return "incorrect userid and password";

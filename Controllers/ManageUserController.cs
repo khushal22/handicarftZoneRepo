@@ -6,6 +6,8 @@ using System.Net.Http;
 using System.Web.Http;
 using WebApplication1.MyDB;
 using WebApplication1.Models;
+using System.Net.Mail;
+
 namespace WebApplication1.Controllers
 {
     /// <summary>
@@ -39,20 +41,32 @@ namespace WebApplication1.Controllers
 
         }
         [HttpGet]
-        public string login(string Id, string Pass)
+        public Tuple<string,tbl_user> login(string Id, string Pass)
         {
             var data = from user in db.tbl_user
                        where (user.user_email == Id && user.user_pass == Pass) || (user.user_mob_no == Id && user.user_pass == Pass)
                        select user;
+            tbl_user u = new tbl_user();
             if (data.Any())
             {
-                foreach ( var item in data)
-                {
-                return "logIn success!!!" + item.user_id +"a";
-                }
+               
+                foreach (var item in data)
+                 {
+                    u.user_id = item.user_id;
+                    u.user_name = item.user_name;
+                    u.user_email = item.user_email;
+                    u.user_add = item.user_add;
+                    u.user_locality = item.user_locality;
+                    u.user_city = item.user_city;
+                    u.user_pincode = item.user_pincode;
+                    u.user_mob_no = item.user_mob_no;
+               }
+
+                return Tuple.Create("Logged In!!", u);
+
             } else
             {
-                return "incorrect userid and password";
+                return Tuple.Create("incorrect userid and password",u);
             }
         }
 
@@ -85,7 +99,7 @@ namespace WebApplication1.Controllers
             return "Record Updated";
         }
         [HttpGet]
-        public string InsertUser(string UserName, string UserEmail, string UserPass, string UserAdd, string UserLoc, string UserCity, decimal UserPin, string UserMob)
+        public Tuple< string,tbl_user> InsertUser(string UserName, string UserEmail, string UserPass, string UserAdd, string UserLoc, string UserCity, decimal UserPin, string UserMob)
         {
             decimal UserId = GetNextUser();
             tbl_user u = new tbl_user();
@@ -100,10 +114,20 @@ namespace WebApplication1.Controllers
             u.user_mob_no = UserMob;
             db.tbl_user.Add(u);
             db.SaveChanges();
-            return "Record Saved";
+
+            tbl_user s = new tbl_user();
+            s.user_id = UserId;
+            s.user_name = UserName;
+            s.user_email = UserEmail;
+            s.user_add = UserAdd;
+            s.user_locality = UserLoc;
+            s.user_city = UserCity;
+            s.user_pincode = UserPin;
+            s.user_mob_no = UserMob;
+            return Tuple.Create("Record Saved ",s);
         }
         [HttpGet]
-        public string insertAlert(string sName, string sMob, string sEmail, string Sub, string Msg, decimal RID)
+        public string insertAlert(string sName, string sMob, string sEmail, string Sub, string Msg, decimal RID,decimal SID)
         {
 
             tbl_alert a = new tbl_alert();
@@ -113,6 +137,7 @@ namespace WebApplication1.Controllers
             a.sub = Sub;
             a.msg = Msg;
             a.rId = RID;
+            a.sid = SID;
             db.tbl_alert.Add(a);
             db.SaveChanges();
             return "Alert Inerted";
@@ -137,7 +162,7 @@ namespace WebApplication1.Controllers
                 a.sub =item.sub;
                 a.msg =item.msg;
                 a.rId =item.rId;
-                
+                a.sid = item.sid;
                 li.Add(a);
             }
             return li;
@@ -180,60 +205,50 @@ namespace WebApplication1.Controllers
         }
         public string deleteOTP(string id)
         {
-            //var data = (from fp in db.tbl_forgetPass
-            //            where fp.emailOrMob == id
-            //            select fp).FirstOrDefault();
-            //db.tbl_forgetPass.dele   
+        
 
             tbl_forgetPass f = db.tbl_forgetPass.Single(asd=>asd.emailOrMob == id);
             db.tbl_forgetPass.Remove(f);
             db.SaveChanges();
             return "record deleted";
         }
-        //public List<ProductListClass> GetAllUsers()
-        //{
-        //    var data = from product in db.tbl_productDetail
-        //               join customer in db.tbl_user on product.user_id equals customer.user_id
-        //               where product.ad_id == 201
-        //               select new { product.pro_name, product.pro_desc,product.ad_id,product.pro_price,product.ad_status,product.pro_image,product.user_id, customer.user_name,customer.user_mob_no,customer.user_city ,customer.user_email};
+        [HttpGet]
+        public string SendMail( string ReceiverEmailID, string Subject, string MailBody)
+        {
+            var data = (from fp in db.tbl_emailDetail
+                        where fp.id == 1
+                        select fp).FirstOrDefault();
 
-        //    List<ProductListClass> li = new List<ProductListClass>();
+           
+            string SenderEmailID,  SenderPassword;
+            SenderEmailID = data.emailId;
+            SenderPassword = data.pass;
+            MailMessage mail = new MailMessage();
+            mail.To.Add(ReceiverEmailID);
+            mail.From = new MailAddress(SenderEmailID);
+            mail.Subject = Subject;
+            mail.Body = MailBody;
+            mail.IsBodyHtml = true;
+            SmtpClient smtp = new SmtpClient();
+            smtp.Host = "smtp.gmail.com";
+            smtp.Port = 587;
+            smtp.UseDefaultCredentials = false;
+            smtp.Credentials = new System.Net.NetworkCredential(SenderEmailID, SenderPassword);
+            smtp.EnableSsl = true;
+            string IsSent = "";
+            try
+            {
+                smtp.Send(mail);
+                IsSent = "Mail Sent Successfully";
+            }
+            catch (Exception e)
+            {
+                IsSent = e.Message;
+            }
 
-        //    foreach (var item in data)
-        //    {S
-        //        ProductListClass t = new ProductListClass();
-        //        t.ProductAdId = item.ad_id;
-        //        t.ProductName = item.pro_name;
-        //        t.ProductImage = item.pro_image;
-        //        t.ProductPrice = Convert.ToDecimal( item.pro_price);
-        //        t.ProductDesc = item.pro_desc;
-        //        t.ProductAdStatus = item.ad_status;
-        //        t.UserId = Convert.ToDecimal(item.user_id);
-        //        t.UserName = item.user_name;
-        //        t.UserEmail = item.user_email;
-        //        t.UserCity = item.user_city;
-        //        t.UserMob = item.user_mob_no;
 
-        //        li.Add(t);
-        //    }
-
-        //    return li;
-        //}
-
-        //var data = from asd in db.tbl_user select asd;
-        //var data123 = from asd in db.tbl_user select new { asd.user_email, asd.user_locality };
-        //List<tbl_user> li = new List<tbl_user>();
-
-        //List<tbl_productDetail> li1 = db.tbl_productDetail.ToList();
-
-        //    foreach (var item in data)
-        //    {
-        //        tbl_user u = new tbl_user();
-        //u.user_add = item.user_add;
-        //        u.user_email = item.user_email;
-        //        li.Add(u);
-        //    }
-        //    return li;
-
+              return IsSent;
+           
+        }
     }
 }

@@ -85,6 +85,43 @@ namespace WebApplication1.Controllers
 
             return li;
         }
+
+
+
+        public List<ProductListClass> GetUsersProducts(decimal userId)
+        {
+            var data = from product in db.tbl_productDetail
+                       join user in db.tbl_user on product.user_id equals user.user_id
+                       where product.user_id == userId
+                       select new { product.ad_id, product.cat_id, product.subcat_id, product.user_id, product.pro_name, product.pro_image, product.pro_price, product.pro_desc, product.ad_status, user.user_name, user.user_email, user.user_city, user.user_mob_no };
+
+            List<ProductListClass> li = new List<ProductListClass>();
+
+            foreach (var item in data)
+            {
+                ProductListClass p = new ProductListClass();
+                p.ProductAdId = item.ad_id;
+                p.ProductCatId = Convert.ToDecimal(item.cat_id);
+                p.ProductSubCatId = Convert.ToDecimal(item.subcat_id);
+                p.UserId = Convert.ToDecimal(item.user_id);
+                p.ProductName = item.pro_name;
+                p.ProductImage = item.pro_image;
+                p.ProductPrice = Convert.ToDecimal(item.pro_price);
+                p.ProductDesc = item.pro_desc;
+                p.ProductAdStatus = item.ad_status;
+
+                p.UserName = item.user_name;
+                p.UserEmail = item.user_email;
+                p.UserCity = item.user_city;
+                p.UserMob = item.user_mob_no;
+
+                li.Add(p);
+            }
+
+            return li;
+        }
+
+
         [HttpGet]
         public string SetStatus(string status, decimal adId)
         {
@@ -126,20 +163,22 @@ namespace WebApplication1.Controllers
             return "Product Inserted";
         }
         [HttpGet]
-        public string addToWishList(decimal adId)
+        public string addToWishList(decimal adId,decimal userId)
         {
             tbl_wishList w = new tbl_wishList();
             w.ad_id = adId;
+            w.user_id = userId;
             db.tbl_wishList.Add(w);
             db.SaveChanges();
             return "Item Added to Wish List";
         }
         [HttpGet]
-        public List<ProductListClass> GetWishList()
+        public List<ProductListClass> GetWishList(decimal userId)
         {
             var data = from product in db.tbl_productDetail
                        join customer in db.tbl_user on product.user_id equals customer.user_id
                        join wlist in db.tbl_wishList on product.ad_id equals wlist.ad_id
+                       where wlist.user_id==userId
                        select new { product.pro_name, product.pro_desc, product.ad_id, product.pro_price, product.ad_status, product.pro_image, product.user_id, customer.user_name, customer.user_mob_no, customer.user_city, customer.user_email };
 
             List<ProductListClass> li = new List<ProductListClass>();
